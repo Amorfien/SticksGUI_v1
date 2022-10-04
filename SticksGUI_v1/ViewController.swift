@@ -7,14 +7,10 @@
 
 import UIKit
 
-var sticksCount: Int = 9
-let char: Character = "🌼"
-var sticks: [Character] = []
-var isGaming = false
-var player1Choise = true
 
 class ViewController: UIViewController {
 
+    @IBOutlet weak var emojiPicker: UIPickerView!
     @IBOutlet weak var sticksLabel: UILabel!
     @IBOutlet weak var plusButton: UIButton!
     @IBOutlet weak var minusButton: UIButton!
@@ -26,15 +22,26 @@ class ViewController: UIViewController {
     @IBOutlet weak var pl2Stack: UIStackView!
 
     @IBOutlet var number3: [UIButton]!
-
     @IBOutlet var number2_3: [UIButton]!
 
+    @IBOutlet weak var movingView: UIView!
+    @IBOutlet weak var movingBtn: UIButton!
 
     override func viewDidLoad() {
         super.viewDidLoad()
 
         plusButton.layer.cornerRadius = 25
         minusButton.layer.cornerRadius = 25
+        movingView.layer.cornerRadius = 15
+        movingView.layer.borderWidth = 1
+        movingView.layer.shadowColor = UIColor.black.cgColor
+        movingView.layer.shadowOpacity = 1
+        movingView.layer.shadowOffset = .zero
+        movingView.layer.shadowRadius = 4
+
+//        emojiPicker.layer.borderWidth = 1
+        emojiPicker.dataSource = self
+        emojiPicker.delegate = self
 
         startButtonPl2.transform = CGAffineTransform(rotationAngle: CGFloat.pi)
         pl2Stack.transform = CGAffineTransform(rotationAngle: CGFloat.pi)
@@ -44,24 +51,79 @@ class ViewController: UIViewController {
     }
 
     @IBAction func plusButtonAction(_ sender: UIButton) {
-        guard sticksCount < 25 else { return }
+        guard sticksCount < maxCount else { return }
         sticksCount += 1
-        sticks = Array(repeating: char, count: sticksCount)
-        sticksLabel.text = String(sticks)
+        labelReload()
     }
 
     @IBAction func minusButtonAction(_ sender: UIButton) {
-        guard sticksCount > 5 else { return }
+        guard sticksCount > minCount else { return }
         sticksCount -= 1
+        labelReload()
+    }
+
+    @IBAction func pl1Start(_ sender: UIButton) {
+        gameStart(player: sender)
+        player1Choise = true
+        startCount = sticksCount
+    }
+    @IBAction func pl2Start(_ sender: UIButton) {
+        gameStart(player: sender)
+        player1Choise = false
+        startCount = sticksCount
+    }
+
+    @IBAction func pl1choice(_ sender: UIButton) {
+        guard isGaming else {return}
+        sticksCount -= Int((sender.titleLabel?.text)!)!
+        labelReload()
+        check()
+        changePlayer()
+    }
+    @IBAction func pl2choice(_ sender: UIButton) {
+        guard isGaming else {return}
+        sticksCount -= Int((sender.titleLabel?.text)!)!
+        labelReload()
+        check()
+        changePlayer()
+    }
+
+    @IBAction func moving(_ sender: UIButton) {
+        switch hideMenu {
+        case true:
+            movingView.transform = CGAffineTransform(translationX: -120, y: 0)
+            sender.setTitle("▶︎", for: .normal)
+            hideMenu.toggle()
+        default:
+            movingView.transform = CGAffineTransform(translationX: 0, y: 0)
+            sender.setTitle("◀︎", for: .normal)
+            hideMenu.toggle()
+        }
+
+    }
+
+    func labelReload() {
+        char = emojis[emojiPicker.selectedRow(inComponent: 0)]
         sticks = Array(repeating: char, count: sticksCount)
-        sticksLabel.text = String(sticks)
+        sticksLabel.text = sticks.joined(separator: "\u{202F}")//узкий пробел
+    }
+
+    func backgoundUpd() {
+        switch emojiPicker.selectedRow(inComponent: 1) {
+        case 0: view.backgroundColor = #colorLiteral(red: 0.4620226622, green: 0.8382837176, blue: 1, alpha: 1)
+        case 1: view.backgroundColor = #colorLiteral(red: 0.9995340705, green: 0.988355577, blue: 0.4726552367, alpha: 1)
+        case 2: view.backgroundColor = #colorLiteral(red: 0.4500938654, green: 0.9813225865, blue: 0.4743030667, alpha: 1)
+        default:
+            view.backgroundColor = .systemGray6
+        }
     }
 
     func welcome() {
-//        guard !isGaming else {return}
+        //        guard !isGaming else {return}
         sticksCount = 21
-        sticks = Array(repeating: char, count: sticksCount)
-        sticksLabel.text = String(sticks)
+        labelReload()
+
+        emojiPicker.isHidden = false
 
         pl1Stack.isHidden = true
         pl2Stack.isHidden = true
@@ -79,11 +141,18 @@ class ViewController: UIViewController {
         plusButton.layer.borderWidth = 1
         minusButton.layer.borderWidth = 1
 
+        movingBtn.isEnabled = true
+        movingView.alpha = 0.92
+
         for nums in number2_3 {nums.isEnabled = true}
         for nums in number3 {nums.isEnabled = true}
     }
 
     func gameStart(player: UIButton) {
+
+        labelReload()
+        emojiPicker.isHidden = true
+
         isGaming = true
         startButtonPl1.isEnabled = false
         startButtonPl2.isEnabled = false
@@ -99,6 +168,9 @@ class ViewController: UIViewController {
             pl1Stack.isHidden = true
             pl2Stack.isHidden = false
         }
+        if !hideMenu { moving(movingBtn) }
+        movingBtn.isEnabled = false
+        movingView.alpha = 0.4
     }
 
     func check() {
@@ -109,11 +181,12 @@ class ViewController: UIViewController {
         default: break
         }
     }
+
     func gameover () {
         isGaming = false
         let looser = player1Choise ? 1 : 2
-        let gameoverAlert = UIAlertController(title: "GameOver", message: "Player \(looser) lost", preferredStyle: .alert)
-        let okbtn = UIAlertAction(title: "Ok", style: .destructive, handler: nil)
+        let gameoverAlert = UIAlertController(title: "GameOver", message: "\nPLAYER \(looser)\n YOU LOSE!\n\n Sticks: \(startCount)\n Moves: \(moves + 1)", preferredStyle: .alert)
+        let okbtn = UIAlertAction(title: "OK", style: .destructive, handler: nil)
         gameoverAlert.addAction(okbtn)
         if looser == 1 {
             present(gameoverAlert, animated: true)
@@ -121,15 +194,16 @@ class ViewController: UIViewController {
             present(gameoverAlert, animated: true,  completion: {() -> Void in
                 gameoverAlert.view.transform = CGAffineTransform(rotationAngle: CGFloat.pi)})
         }
-
+        moves = 0
         welcome()
     }
 
     func changePlayer() {
         guard isGaming else { return }
         player1Choise.toggle()
-//        pl1Stack.isHidden.toggle()
-//        pl2Stack.isHidden.toggle()
+        moves += 1
+        //        pl1Stack.isHidden.toggle()
+        //        pl2Stack.isHidden.toggle()
         if player1Choise {
             pl1Stack.isHidden = false
             pl2Stack.isHidden = true
@@ -138,36 +212,36 @@ class ViewController: UIViewController {
             pl2Stack.isHidden = false
         }
     }
+}
 
-    @IBAction func pl1Start(_ sender: UIButton) {
-        gameStart(player: sender)
-        player1Choise = true
+extension ViewController: UIPickerViewDataSource {
+    func numberOfComponents(in pickerView: UIPickerView) -> Int { return 2 }
+    func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
+        switch component {
+        case 0:
+            return emojis.count
+        default:
+            return colors.count
+        }
     }
-    @IBAction func pl2Start(_ sender: UIButton) {
-        gameStart(player: sender)
-        player1Choise = false
+}
+
+extension ViewController: UIPickerViewDelegate {
+    func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
+        switch component {
+        case 0:
+            return emojis[row]
+        default:
+            return colors[row]
+        }
     }
-
-
-    @IBAction func pl1choice(_ sender: UIButton) {
-        guard isGaming else {return}
-        sticksCount -= Int((sender.titleLabel?.text)!)!
-        sticks = Array(repeating: char, count: sticksCount)
-        sticksLabel.text = String(sticks)
-        check()
-        changePlayer()
+    func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
+        switch component {
+        case 0:
+            labelReload()
+        default:
+            backgoundUpd()
+        }
     }
-
-
-    @IBAction func pl2choice(_ sender: UIButton) {
-        guard isGaming else {return}
-        sticksCount -= Int((sender.titleLabel?.text)!)!
-        sticks = Array(repeating: char, count: sticksCount)
-        sticksLabel.text = String(sticks)
-        check()
-        changePlayer()
-    }
-
-
 }
 

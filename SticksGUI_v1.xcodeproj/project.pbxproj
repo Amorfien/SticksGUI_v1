@@ -13,6 +13,7 @@
 		185FC8CB28E775B6004873B1 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 185FC8C928E775B6004873B1 /* Main.storyboard */; };
 		185FC8CD28E775B7004873B1 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 185FC8CC28E775B7004873B1 /* Assets.xcassets */; };
 		185FC8D028E775B7004873B1 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 185FC8CE28E775B7004873B1 /* LaunchScreen.storyboard */; };
+		18794CC828EC85010005A244 /* model.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18794CC728EC85010005A244 /* model.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -24,6 +25,7 @@
 		185FC8CC28E775B7004873B1 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		185FC8CF28E775B7004873B1 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		185FC8D128E775B7004873B1 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		18794CC728EC85010005A244 /* model.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = model.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -56,9 +58,10 @@
 		185FC8C228E775B6004873B1 /* SticksGUI_v1 */ = {
 			isa = PBXGroup;
 			children = (
+				185FC8C728E775B6004873B1 /* ViewController.swift */,
+				18794CC728EC85010005A244 /* model.swift */,
 				185FC8C328E775B6004873B1 /* AppDelegate.swift */,
 				185FC8C528E775B6004873B1 /* SceneDelegate.swift */,
-				185FC8C728E775B6004873B1 /* ViewController.swift */,
 				185FC8C928E775B6004873B1 /* Main.storyboard */,
 				185FC8CC28E775B7004873B1 /* Assets.xcassets */,
 				185FC8CE28E775B7004873B1 /* LaunchScreen.storyboard */,
@@ -141,6 +144,7 @@
 				185FC8C828E775B6004873B1 /* ViewController.swift in Sources */,
 				185FC8C428E775B6004873B1 /* AppDelegate.swift in Sources */,
 				185FC8C628E775B6004873B1 /* SceneDelegate.swift in Sources */,
+				18794CC828EC85010005A244 /* model.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -293,11 +297,10 @@
 				INFOPLIST_KEY_CFBundleDisplayName = Sticks;
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.board-games";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
-				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
+				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen.storyboard;
 				INFOPLIST_KEY_UIMainStoryboardFile = Main;
 				INFOPLIST_KEY_UIStatusBarHidden = YES;
-				INFOPLIST_KEY_UISupportedInterfaceOrientations = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = UIInterfaceOrientationLandscapeRight;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationLandscapeRight;
 				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -328,11 +331,10 @@
 				INFOPLIST_KEY_CFBundleDisplayName = Sticks;
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.board-games";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
-				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
+				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen.storyboard;
 				INFOPLIST_KEY_UIMainStoryboardFile = Main;
 				INFOPLIST_KEY_UIStatusBarHidden = YES;
-				INFOPLIST_KEY_UISupportedInterfaceOrientations = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = UIInterfaceOrientationLandscapeRight;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationLandscapeRight;
 				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
