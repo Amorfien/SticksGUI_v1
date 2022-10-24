@@ -19,5 +19,5 @@ struct Game {
     var player1AI = false
     var player2AI = false
     var maxAI = 3
-    var aiTimer = 1//Int.random(in: 0...1)
+    var aiTimer = Int.random(in: 0...2)
 }
