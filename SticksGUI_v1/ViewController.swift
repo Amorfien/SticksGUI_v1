@@ -11,6 +11,7 @@ class ViewController: UIViewController {
 
     var customs = Custom()
     var game = Game()
+    var labelText = ""
 
     @IBOutlet weak var emojiPicker: UIPickerView!
     @IBOutlet weak var sticksLabel: UILabel!
@@ -84,6 +85,10 @@ class ViewController: UIViewController {
 
     }
 
+    override func viewWillAppear(_ animated: Bool) {
+        labelReload()
+    }
+
     @IBAction func plusButtonAction(_ sender: UIButton) {
         guard game.sticksCount < game.maxCount else { return }
         game.sticksCount += 1
@@ -112,14 +117,37 @@ class ViewController: UIViewController {
         labelReload()
         print("Player 1 takes \(move) sticks")
         print("Походил игрок " + (game.player1Choise ? "1" : "2"))
-       // check()
         if !game.player2AI {
             check()
         } else {
-//            pl1Stack.isHidden = true
+//            Вот тут нужно принудительно перерисовывать Label -------------------------
+            sticksLabel.text = labelText
+            print(labelText, game.sticksCount)
+
+            updateFocusIfNeeded()
+            setNeedsFocusUpdate()
+            viewWillAppear(false)
+
+            DispatchQueue.main.async {
+                self.sticksLabel.text = self.labelText
+            }
+
+            
+//            view.backgroundColor = .red
+//
+//            sticksLabel.setNeedsDisplay()
+//            sticksLabel.setNeedsLayout()
+//            sticksLabel.layoutIfNeeded()
+//            sticksLabel.layoutSubviews()
+//            view.reloadInputViews()
+//
+//            view.setNeedsDisplay()
+//            view.setNeedsLayout()
+//            view.layoutIfNeeded()
+//            view.layoutSubviews()
+
             check()
             ai2move()
-//            pl1Stack.isHidden = false
         }
     }
     @IBAction func pl2choice(_ sender: UIButton) {
@@ -128,26 +156,27 @@ class ViewController: UIViewController {
         labelReload()
         print("Player 2 takes \(move) sticks")
         print("Походил игрок " + (game.player1Choise ? "1" : "2"))
-
-        //check()
         if !game.player1AI {
             check()
         } else {
-//            pl2Stack.isHidden = true
             check()
             ai1move()
-//            pl2Stack.isHidden = false
         }
     }
 
     @IBAction func movingMenu(_ sender: UIButton) {
         switch customs.hideMenu {
         case true:
-            movingView.transform = CGAffineTransform(translationX: -110, y: 0)
+            UIView.animate(withDuration: 0.4) {
+                self.movingView.transform = CGAffineTransform(translationX: -110, y: 0)
+            }
             sender.setTitle("▶︎", for: .normal)
             customs.hideMenu.toggle()
         default:
-            movingView.transform = CGAffineTransform(translationX: 0, y: 0)
+            UIView.animate(withDuration: 0.4) {
+                self.movingView.transform = CGAffineTransform(translationX: 0, y: 0)
+
+            }
             sender.setTitle("◀︎", for: .normal)
             customs.hideMenu.toggle()
         }
@@ -162,7 +191,6 @@ class ViewController: UIViewController {
 //    MARK: - WELCOME!
 
     func welcome() {
-        //        guard !isGaming else {return}
         game.moves = 0
         game.sticksCount = 21
         game.maxAI = 3
@@ -184,8 +212,6 @@ class ViewController: UIViewController {
 
         ai1.isHidden = false
         ai2.isHidden = false
-//        pl1Stack.alpha = 1
-//        pl2Stack.alpha = 1
 
         movingBtn.isEnabled = true
         movingView.alpha = 0.92
@@ -198,7 +224,8 @@ class ViewController: UIViewController {
     func labelReload() {
         game.char = customs.emojis[emojiPicker.selectedRow(inComponent: 0)]
         game.sticks = Array(repeating: game.char, count: game.sticksCount)
-        sticksLabel.text = game.sticks.joined(separator: "\u{202F}")//узкий пробел
+        labelText = game.sticks.joined(separator: "\u{202F}")//узкий пробел
+        sticksLabel.text = labelText
     }
 
     func backgoundUpd() {
@@ -246,17 +273,13 @@ class ViewController: UIViewController {
 
         ai1.isHidden = true
         ai2.isHidden = true
-//        if ai1_switch.isOn {
-//            pl1Stack.isHidden = true
-//        }
-//        if ai2_switch.isOn {
-//            pl2Stack.isHidden = true
-//        }
 
         if !customs.hideMenu { movingMenu(movingBtn) }
         movingBtn.isEnabled = false
         movingView.alpha = 0.4
     }
+
+    //    MARK: - CHECK
 
     func check() {
         switch game.sticksCount {
@@ -280,22 +303,23 @@ class ViewController: UIViewController {
         let looser = game.player1Choise ? 1 : 2
         print("Looser: \(looser)\n")
         let gameoverAlert = UIAlertController(title: "GameOver", message: "\nPLAYER \(looser)\n YOU LOSE!\n\n Sticks: \(game.startCount)\n Moves: \(game.moves + 1)", preferredStyle: .alert)
-        let okbtn = UIAlertAction(title: "OK", style: .default, handler: {_ in self.welcome()})
+        let okbtn = UIAlertAction(title: "OK", style: .default) {_ in self.welcome()}
         gameoverAlert.addAction(okbtn)
         if looser == 1 {
             present(gameoverAlert, animated: true)
         } else {
-            present(gameoverAlert, animated: true,  completion: {() -> Void in
-                gameoverAlert.view.transform = CGAffineTransform(rotationAngle: CGFloat.pi)})
+            present(gameoverAlert, animated: true) {
+                gameoverAlert.view.transform = CGAffineTransform(rotationAngle: CGFloat.pi)
+            }
         }
-        //welcome()
     }
 
     func ai1move() {
         guard game.sticksCount > 0 else { return }
         let rand = Int.random(in: 1...game.maxAI)
         game.sticksCount -= rand
-        sleep(UInt32(game.aiTimer))
+        let aiTimer = UInt32.random(in: 1...3)
+        sleep(aiTimer)
         labelReload()
         print("AI_1 takes \(rand) sticks")
         if game.player2AI && game.sticksCount > 0 {
@@ -311,7 +335,8 @@ class ViewController: UIViewController {
         guard game.sticksCount > 0 else { return }
         let rand = Int.random(in: 1...game.maxAI)
         game.sticksCount -= rand
-        sleep(UInt32(game.aiTimer))
+        let aiTimer = UInt32.random(in: 1...3)
+        sleep(aiTimer)
         labelReload()
         print("AI_2 takes \(rand) sticks")
         if game.player1AI && game.sticksCount > 0 {

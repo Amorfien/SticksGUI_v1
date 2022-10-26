@@ -18,8 +18,11 @@
                         <rect key="frame" x="0.0" y="0.0" width="896" height="414"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="🌼 🌼 🌼 🌼 🌼 🌼 🌼" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="0Y9-VZ-674">
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="center" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="🌼 🌼 🌼 🌼 🌼 🌼 🌼" textAlignment="center" lineBreakMode="tailTruncation" minimumScaleFactor="0.69999999999999996" translatesAutoresizingMaskIntoConstraints="NO" id="0Y9-VZ-674">
                                 <rect key="frame" x="30" y="179" width="836" height="70"/>
+                                <accessibility key="accessibilityConfiguration">
+                                    <accessibilityTraits key="traits" updatesFrequently="YES"/>
+                                </accessibility>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="70" id="dLQ-iW-Zvn"/>
                                 </constraints>
@@ -216,7 +219,7 @@
                                 <rect key="frame" x="394.5" y="269" width="107" height="30"/>
                                 <subviews>
                                     <imageView clipsSubviews="YES" userInteractionEnabled="NO" alpha="0.69999999999999996" contentMode="scaleAspectFit" image="person.crop.circle" catalog="system" translatesAutoresizingMaskIntoConstraints="NO" id="RCV-tb-Q6m">
-                                        <rect key="frame" x="0.0" y="0.5" width="20" height="29"/>
+                                        <rect key="frame" x="0.0" y="-0.5" width="20" height="30.5"/>
                                         <color key="tintColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <constraints>
                                             <constraint firstAttribute="width" constant="20" id="FoD-N6-dcx"/>
@@ -230,7 +233,7 @@
                                         </connections>
                                     </switch>
                                     <imageView clipsSubviews="YES" userInteractionEnabled="NO" alpha="0.69999999999999996" contentMode="scaleAspectFit" image="cpu" catalog="system" translatesAutoresizingMaskIntoConstraints="NO" id="bMk-km-ooJ">
-                                        <rect key="frame" x="85" y="0.5" width="22" height="29"/>
+                                        <rect key="frame" x="85" y="0.0" width="22" height="30"/>
                                         <color key="tintColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="30" id="2KI-uV-BfA"/>
@@ -247,7 +250,7 @@
                                 <rect key="frame" x="394.5" y="115" width="107" height="30"/>
                                 <subviews>
                                     <imageView clipsSubviews="YES" userInteractionEnabled="NO" alpha="0.69999998807907104" contentMode="scaleAspectFit" image="person.crop.circle" catalog="system" translatesAutoresizingMaskIntoConstraints="NO" id="fR4-88-QAA">
-                                        <rect key="frame" x="0.0" y="0.5" width="20" height="29"/>
+                                        <rect key="frame" x="0.0" y="-0.5" width="20" height="30.5"/>
                                         <color key="tintColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <constraints>
                                             <constraint firstAttribute="width" constant="20" id="7V7-3a-Xq2"/>
@@ -261,7 +264,7 @@
                                         </connections>
                                     </switch>
                                     <imageView clipsSubviews="YES" userInteractionEnabled="NO" alpha="0.69999998807907104" contentMode="scaleAspectFit" image="cpu" catalog="system" translatesAutoresizingMaskIntoConstraints="NO" id="nIF-dQ-BZU">
-                                        <rect key="frame" x="85" y="0.5" width="22" height="29"/>
+                                        <rect key="frame" x="85" y="0.0" width="22" height="30"/>
                                         <color key="tintColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="30" id="3PX-Fc-RFo"/>
