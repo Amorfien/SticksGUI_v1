@@ -67,6 +67,11 @@ class ViewController: UIViewController {
             ai2.transform = CGAffineTransform(rotationAngle: .pi)
         }
     }
+    @IBOutlet weak var movingSticks: UILabel! {
+        didSet {
+            movingSticks.alpha = 0
+        }
+    }
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -115,6 +120,9 @@ class ViewController: UIViewController {
         let move: Int = Int((sender.titleLabel?.text)!)!
         game.sticksCount -= move
         labelReload()
+
+        animateChoice(sender: sender, player: 1)
+
         print("Player 1 takes \(move) sticks")
         print("Походил игрок " + (game.player1Choise ? "1" : "2"))
         if !game.player2AI {
@@ -124,15 +132,14 @@ class ViewController: UIViewController {
             sticksLabel.text = labelText
             print(labelText, game.sticksCount)
 
-            updateFocusIfNeeded()
-            setNeedsFocusUpdate()
-            viewWillAppear(false)
+//            updateFocusIfNeeded()
+//            setNeedsFocusUpdate()
+//            viewWillAppear(false)
+//
+//            DispatchQueue.main.async {
+//                self.sticksLabel.text = self.labelText
+//            }
 
-            DispatchQueue.main.async {
-                self.sticksLabel.text = self.labelText
-            }
-
-            
 //            view.backgroundColor = .red
 //
 //            sticksLabel.setNeedsDisplay()
@@ -154,6 +161,9 @@ class ViewController: UIViewController {
         let move: Int = Int((sender.titleLabel?.text)!)!
         game.sticksCount -= move
         labelReload()
+
+        animateChoice(sender: sender, player: 2)
+
         print("Player 2 takes \(move) sticks")
         print("Походил игрок " + (game.player1Choise ? "1" : "2"))
         if !game.player1AI {
@@ -195,6 +205,7 @@ class ViewController: UIViewController {
         game.sticksCount = 21
         game.maxAI = 3
         game.startCount = game.sticksCount
+        movingSticks.isHidden = false
 
         labelReload()
 
@@ -221,11 +232,15 @@ class ViewController: UIViewController {
 
     }
 
+    //    MARK: - Label Reload
+
     func labelReload() {
         game.char = customs.emojis[emojiPicker.selectedRow(inComponent: 0)]
         game.sticks = Array(repeating: game.char, count: game.sticksCount)
         labelText = game.sticks.joined(separator: "\u{202F}")//узкий пробел
         sticksLabel.text = labelText
+        movingSticks.text = game.char
+        movingSticks.transform = CGAffineTransform(translationX: 0, y: 0)
     }
 
     func backgoundUpd() {
@@ -277,6 +292,10 @@ class ViewController: UIViewController {
         if !customs.hideMenu { movingMenu(movingBtn) }
         movingBtn.isEnabled = false
         movingView.alpha = 0.4
+
+        if game.player1AI || game.player2AI {
+            movingSticks.isHidden = true
+        }
     }
 
     //    MARK: - CHECK
@@ -346,6 +365,27 @@ class ViewController: UIViewController {
             gameover()
         } else {
             check()
+        }
+    }
+
+    func animateChoice (sender: UIButton, player: Int){
+        movingSticks.text = game.char
+
+        let array = Array(repeating: game.char, count: Int((sender.titleLabel?.text)!)!)
+        movingSticks.text = array.joined(separator: "\u{202F}")
+
+        movingSticks.transform = CGAffineTransform(translationX: 0, y: 0)
+        movingSticks.transform = CGAffineTransform(scaleX: 1.5, y: 1.5)
+        UILabel.animate(withDuration: 0.7){
+            switch player {
+            case 1:
+                self.movingSticks.transform = CGAffineTransform(translationX: 0, y: UIScreen.main.bounds.height / 2.2)//203)
+                self.movingSticks.alpha = 1
+            case 2:
+                self.movingSticks.transform = CGAffineTransform(translationX: 0, y: UIScreen.main.bounds.height / -2.2)
+                self.movingSticks.alpha = 1
+            default: return
+            }
         }
     }
 }
