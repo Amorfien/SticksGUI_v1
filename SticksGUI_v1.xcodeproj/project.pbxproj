@@ -41,6 +41,16 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		185EBFBC2912A8790023BBAB /* App */ = {
+			isa = PBXGroup;
+			children = (
+				185FC8C328E775B6004873B1 /* AppDelegate.swift */,
+				185FC8C528E775B6004873B1 /* SceneDelegate.swift */,
+				185FC8D128E775B7004873B1 /* Info.plist */,
+			);
+			path = App;
+			sourceTree = "<group>";
+		};
 		185FC8B728E775B6004873B1 = {
 			isa = PBXGroup;
 			children = (
@@ -60,15 +70,13 @@
 		185FC8C228E775B6004873B1 /* SticksGUI_v1 */ = {
 			isa = PBXGroup;
 			children = (
+				185EBFBC2912A8790023BBAB /* App */,
 				185FC8C728E775B6004873B1 /* ViewController.swift */,
 				18F57D86290455EB00897065 /* Game.swift */,
 				18F57D84290452B900897065 /* Custom.swift */,
-				185FC8C328E775B6004873B1 /* AppDelegate.swift */,
-				185FC8C528E775B6004873B1 /* SceneDelegate.swift */,
 				185FC8C928E775B6004873B1 /* Main.storyboard */,
-				185FC8CC28E775B7004873B1 /* Assets.xcassets */,
 				185FC8CE28E775B7004873B1 /* LaunchScreen.storyboard */,
-				185FC8D128E775B7004873B1 /* Info.plist */,
+				185FC8CC28E775B7004873B1 /* Assets.xcassets */,
 			);
 			path = SticksGUI_v1;
 			sourceTree = "<group>";
@@ -297,7 +305,7 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 4V4XBFRF5Z;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_FILE = SticksGUI_v1/Info.plist;
+				INFOPLIST_FILE = SticksGUI_v1/App/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = Sticks;
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.board-games";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
@@ -331,7 +339,7 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 4V4XBFRF5Z;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_FILE = SticksGUI_v1/Info.plist;
+				INFOPLIST_FILE = SticksGUI_v1/App/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = Sticks;
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.board-games";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;

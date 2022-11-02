@@ -15,6 +15,14 @@ class ViewController: UIViewController {
 
     @IBOutlet weak var emojiPicker: UIPickerView!
     @IBOutlet weak var sticksLabel: UILabel!
+
+    @IBOutlet weak var minusCountLabel: UILabel!
+    @IBOutlet weak var plusCountLabel: UILabel! {
+        didSet {
+            plusCountLabel.transform = CGAffineTransform(rotationAngle: CGFloat.pi)
+        }
+    }
+
     @IBOutlet weak var plusButton: UIButton! {
         didSet {
             plusButton.layer.cornerRadius = 25
@@ -87,22 +95,43 @@ class ViewController: UIViewController {
         emojiPicker.delegate = self
 
         welcome()
+        addTap()
 
-    }
-
-    override func viewWillAppear(_ animated: Bool) {
-        labelReload()
     }
 
     @IBAction func plusButtonAction(_ sender: UIButton) {
         guard game.sticksCount < game.maxCount else { return }
         game.sticksCount += 1
         labelReload()
+        UIView.animate(withDuration: 1) {
+            self.minusButton.titleLabel?.alpha = 0.1
+            self.plusButton.titleLabel?.alpha = 0.1
+            self.minusCountLabel.alpha = 1
+            self.plusCountLabel.alpha = 1
+        }
+        UIView.animate(withDuration: 1) {
+            self.minusButton.titleLabel?.alpha = 1
+            self.plusButton.titleLabel?.alpha = 1
+            self.minusCountLabel.alpha = 0
+            self.plusCountLabel.alpha = 0
+        }
     }
     @IBAction func minusButtonAction(_ sender: UIButton) {
         guard game.sticksCount > game.minCount else { return }
         game.sticksCount -= 1
         labelReload()
+        UIView.animate(withDuration: 1) {
+            self.minusButton.titleLabel?.alpha = 0.1
+            self.plusButton.titleLabel?.alpha = 0.1
+            self.minusCountLabel.alpha = 1
+            self.plusCountLabel.alpha = 1
+        }
+        UIView.animate(withDuration: 1) {
+            self.minusButton.titleLabel?.alpha = 1
+            self.plusButton.titleLabel?.alpha = 1
+            self.minusCountLabel.alpha = 0
+            self.plusCountLabel.alpha = 0
+        }
     }
 
     @IBAction func pl1Start(_ sender: UIButton) {
@@ -174,7 +203,7 @@ class ViewController: UIViewController {
         }
     }
 
-    @IBAction func movingMenu(_ sender: UIButton) {
+    @IBAction func movingMenuButton(_ sender: UIButton) {
         switch customs.hideMenu {
         case true:
             UIView.animate(withDuration: 0.4) {
@@ -198,6 +227,17 @@ class ViewController: UIViewController {
         game.player2AI.toggle()
     }
 
+    func addTap() {
+        let tap = UITapGestureRecognizer(target: self, action: #selector(tapOnView))
+        view.isUserInteractionEnabled = true
+        view.addGestureRecognizer(tap)
+    }
+    @objc
+    func tapOnView() {
+        if !customs.hideMenu { movingMenuButton(movingBtn) }
+    }
+
+
 //    MARK: - WELCOME!
 
     func welcome() {
@@ -213,6 +253,9 @@ class ViewController: UIViewController {
 
         pl1Stack.isHidden = true
         pl2Stack.isHidden = true
+
+        minusCountLabel.alpha = 0
+        plusCountLabel.alpha = 0
 
         startButtonPl1.isEnabled = true
         startButtonPl2.isEnabled = true
@@ -243,6 +286,8 @@ class ViewController: UIViewController {
         sticksLabel.text = labelText
         movingSticks.text = game.char
         movingSticks.transform = CGAffineTransform(translationX: 0, y: 0)
+        plusCountLabel.text = String(game.sticksCount)
+        minusCountLabel.text = String(game.sticksCount)
     }
 
     func backgoundUpd() {
@@ -291,7 +336,7 @@ class ViewController: UIViewController {
         ai1.isHidden = true
         ai2.isHidden = true
 
-        if !customs.hideMenu { movingMenu(movingBtn) }
+        if !customs.hideMenu { movingMenuButton(movingBtn) }
         movingBtn.isEnabled = false
         movingView.alpha = 0.4
 
@@ -317,6 +362,8 @@ class ViewController: UIViewController {
             pl2Stack.isHidden.toggle()
         }
     }
+
+    //    MARK: - GameOver
 
     func gameover () {
         pl1Stack.isHidden = true
